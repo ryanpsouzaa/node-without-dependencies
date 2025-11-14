@@ -14,10 +14,14 @@ const server = http.createServer((req, res) => {
     });
 
     res.setHeader('Content-Type', 'application/json');
-    return res.end(JSON.stringify(users));
+    return res.writeHead(201).end(JSON.stringify(users));
+
+  } else if(method === 'GET' && url === '/users' ){
+    res.setHeader('Content-Type', 'application/json');
+    return res.writeHead(200).end(JSON.stringify(users));
   }
 
-  return res.end('Hello World!');
+  return res.writeHead(404).end('Not Found');
 });
 
 server.listen(3333);
