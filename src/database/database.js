@@ -19,8 +19,20 @@ export class Database{
     fs.writeFile(DATABASE_PATH, JSON.stringify(this.#database));  
   }
 
-  select(table){
-    return this.#database[table] ?? []
+  select(table, search) {
+    console.log('IN - select');
+    let data = this.#database[table] ?? []
+
+    if (search) {
+      data = data.filter(row => {
+        return Object.entries(search).some(([key, value]) => {
+          return row[key].toLowerCase().includes(value.toLowerCase())
+        })
+      })
+    }
+
+    console.log('OUT - select');
+    return data;
   }
 
   insert(table, data){

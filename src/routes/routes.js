@@ -10,7 +10,14 @@ export const routes = [
     method: 'GET',
     path: buildRoutesPath('/users'),
     handler: (req, res) => {
-      const users = database.select('users');
+      console.log('IN - handler GET')
+      const { search } = req.query;
+
+      const users = database.select(
+        'users', 
+        search ? { name: search, email: search } : null
+      );
+      console.log('OUT - handler GET');
       return res.writeHead(200).end(JSON.stringify(users));
     }
   },
