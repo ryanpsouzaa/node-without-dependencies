@@ -1,6 +1,7 @@
 import { Database } from '../database/database.js';
 import { randomUUID } from 'node:crypto';
 import { buildRoutesPath } from '../utils/buildRoutesPath.js';
+import isUUID from 'is-uuid';
 
 const database = new Database();
 
@@ -34,17 +35,38 @@ export const routes = [
     path: buildRoutesPath('/users/:id'),
     handler: (req, res) => {
       const id = req.params.id;
-      console.log(`IN - handler: id = ${id}`);
+      console.log(`IN - handler DEL: id = ${id}`);
 
-      if(id){
+      if(isUUID.v4(id)){
         database.delete('users', id);
         res.writeHead(204).end();
 
       } else {
 
-        res.writeHead(400).end('Id not send')
+        res.writeHead(400).end('Id not valid')
+        console.error(`Id not valid: ${id}`);
       }
-      console.log('OUT - handler')
+      console.log('OUT - handler DEL')
+    }
+  },
+  {
+    method: 'PUT',
+    path: buildRoutesPath('/users/:id'),
+    handler: (req, res) => {
+      const id = req.params.id;
+      const { name, email } = req.body;
+      console.log(`IN - handler PUT: id = ${id}`);
+
+      if(isUUID.v4(id)){
+        database.update('users', id, { name, email });
+        res.writeHead(204).end();
+
+      } else {
+        res.writeHead(400).end('Id is not valid');
+        console.error(`Id not valid: ${id}`);
+      }
+
+      console.log('OUT - handler PUT');
     }
   }
 ]

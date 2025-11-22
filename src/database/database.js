@@ -47,4 +47,16 @@ export class Database{
     }
     console.log('OUT - delete');
   }
+
+  update(table, id, data){
+    console.log('IN - update');
+    const rowIndex = this.#database[table].findIndex(row => row.id === id);
+
+    if(rowIndex > -1){
+      this.#database[table][rowIndex] = { id, ...data };
+      this.#persist();
+      console.log(`User updated: ${id}`);
+    }
+    console.log('OUT - update');
+  }
 }
