@@ -13,17 +13,13 @@ const server = http.createServer(async (req, res) => {
 
   if(routeFound){
     const routeParams = req.url.match(routeFound.path);
-    console.log(routeParams);
+
+    req.params = { ...routeParams.groups };
 
     return routeFound.handler(req, res);
   }
 
-  if(!routeFound){
-    return res.writeHead(404).end('Not Found');
-  }
-
-  routeFound.handler(req, res);
-
+  return res.writeHead(404).end('Not Found');
 });
 
 server.listen(3333);

@@ -31,10 +31,20 @@ export const routes = [
   },
   {
     method: 'DELETE',
-    path: buildRoutesPath('/users'),
+    path: buildRoutesPath('/users/:id'),
     handler: (req, res) => {
-      return res.end();
-    }
+      const id = req.params.id;
+      console.log(`IN - handler: id = ${id}`);
 
+      if(id){
+        database.delete('users', id);
+        res.writeHead(204).end();
+
+      } else {
+
+        res.writeHead(400).end('Id not send')
+      }
+      console.log('OUT - handler')
+    }
   }
 ]

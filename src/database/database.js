@@ -35,4 +35,16 @@ export class Database{
 
     return data;
   }
+
+  delete(table, id){
+    console.log('IN - delete');
+    const rowIndex = this.#database[table].findIndex(row => row.id === id);
+
+    if(rowIndex > -1){
+      this.#database[table].splice(rowIndex, 1);
+      this.#persist();
+      console.log('APAGADO')
+    }
+    console.log('OUT - delete');
+  }
 }
